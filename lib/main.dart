@@ -104,6 +104,22 @@ class _MyAppState extends State<MyApp> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.person,
+              color: Color(0xFF1DB954),
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
 
       body: Padding(
@@ -778,6 +794,235 @@ class _PlayerPageState extends State<PlayerPage> {
               ),
 
               const SizedBox(height: 20),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ================= HALAMAN PROFIL =================
+
+class ProfilePage extends StatefulWidget {
+  const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  String nama = 'Justin';
+  String username = '@Kumo';
+  String deskripsi = '825240123';
+
+  // MENGUBAH INFORMASI PROFIL
+  void editProfil() {
+    final namaController = TextEditingController(text: nama);
+    final usernameController = TextEditingController(text: username);
+    final deskripsiController = TextEditingController(text: deskripsi);
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF282828),
+          title: const Text(
+            'Edit Profil',
+            style: TextStyle(color: Colors.white),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: namaController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Nama',
+                    labelStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                TextField(
+                  controller: usernameController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Username',
+                    labelStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                TextField(
+                  controller: deskripsiController,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    labelText: 'Deskripsi',
+                    labelStyle: TextStyle(color: Colors.grey),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                namaController.dispose();
+                usernameController.dispose();
+                deskripsiController.dispose();
+              },
+              child: const Text(
+                'Batal',
+                style: TextStyle(color: Colors.grey),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF1DB954),
+              ),
+              onPressed: () {
+                setState(() {
+                  nama = namaController.text;
+                  username = usernameController.text;
+                  deskripsi = deskripsiController.text;
+                });
+                Navigator.pop(context);
+                namaController.dispose();
+                usernameController.dispose();
+                deskripsiController.dispose();
+              },
+              child: const Text(
+                'Simpan',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFF121212),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF121212),
+        foregroundColor: Colors.white,
+        elevation: 0,
+        title: const Text(
+          'Profil Saya',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const SizedBox(height: 30),
+
+              // FOTO PROFIL
+              const CircleAvatar(
+                radius: 60,
+                backgroundColor: Color(0xFF282828),
+                child: Icon(
+                  Icons.person,
+                  size: 70,
+                  color: Color(0xFF1DB954),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // NAMA PENGGUNA
+              Text(
+                nama,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 23,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                username,
+                style: const TextStyle(
+                  color: Colors.grey,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                deskripsi,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // TOMBOL EDIT PROFIL
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: editProfil,
+                  icon: const Icon(Icons.edit),
+                  label: const Text('Edit Profil'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1DB954),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.all(14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 30),
+
+              // INFORMASI APLIKASI
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF282828),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Tentang Aplikasi',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Music Player merupakan aplikasi pemutar musik '
+                          'yang memungkinkan pengguna mencari dan '
+                          'mendengarkan preview lagu favorit.',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'Versi Aplikasi: 1.0.0',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
